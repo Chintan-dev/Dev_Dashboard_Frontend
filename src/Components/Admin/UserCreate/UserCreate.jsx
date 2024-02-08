@@ -34,7 +34,7 @@ export default function UserCreate() {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT_DEV}/Users/CreateUser`,payload);  
             if(response.data.success){
-                message.success('Create successful');  
+                message.success('Create successfully');  
                 form.resetFields();
                 console.log('Create successfully:', response.data);
             }else{
@@ -54,7 +54,7 @@ export default function UserCreate() {
     const fetchUserList = async () => {
         showLoader(true);
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_ENDPOINT_DEV}/Users/GetUser`);
+            const response = await axios.get(`${process.env.REACT_APP_API_ENDPOINT_DEV}/Users/GetAllUser`);
             if (response.data.success) {
                 console.log("print", response.data.data);
                 setuserlist(response.data.data);
@@ -142,9 +142,13 @@ export default function UserCreate() {
         showLoader(true);
         payload.active ? payload.active = false : payload.active = true;
         try {
-            const response = await axios.put(`${process.env.REACT_APP_API_ENDPOINT_DEV}/Users/CreateAction`, payload);
-            message.success('Update successful')
-            console.log('Update successful:', response.data);
+            const response = await axios.put(`${process.env.REACT_APP_API_ENDPOINT_DEV}/Users/UserAction`, payload);
+            if(response.data.success){
+                message.success('Update successfully')
+                console.log('Update successfully', response.data);
+            }else{
+                message.error(response.data.message);
+            }
         } catch (error) {
             message.error('Error updating role action');
             console.error('Error updating role action:', error.message);
@@ -156,7 +160,7 @@ export default function UserCreate() {
     useEffect(() => {
         fetchUserList();
         fetchRoleList();
-    }, []);
+    },[]);
 
 
     return (
